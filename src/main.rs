@@ -1,26 +1,8 @@
-use std::net::{TcpListener, TcpStream};
-use std::io::prelude::*;
-use std::fs;
+mod HttpWebServer;
 
 fn main()
 {
-    let listener = TcpListener::bind("127.0.0.1:8080").unwrap();
+    let web_server = HttpWebServer::HttpWebServer::new("127.0.0.1".to_string(), 8080);
 
-    for stream in listener.incoming()
-    {
-        handle_client(stream.unwrap());
-    }
-}
-
-
-fn handle_client(mut stream: TcpStream)
-{
-    let mut buffer = [0; 512];
-    stream.read(&mut buffer).unwrap();
-
-    let file_data = fs::read_to_string("htmlFiles\\test.html").unwrap();
-    let response = format!("HTTP/1.1 200 OK\r\n\r\n{}", file_data);
-
-    stream.write(response.as_bytes()).unwrap();
-    stream.flush().unwrap();
+    web_server.listen();
 }
