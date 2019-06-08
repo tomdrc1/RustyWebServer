@@ -1,12 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
+<html>
+<head>
     <meta charset="utf-8">
-    <title>Hello!</title>
-    <script src="index.js"></script>
-  </head>
-  <body>
-    <h1>Hello!</h1>
-    <p>Hi from Rust</p>
-  </body>
+    <title>Hello wasm-pack!</title>
+    <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+    <div class="grid-container">
+        <div class="headers">
+            <button id="loginButton"> Login</button>
+        </div>
+        <div class="content">
+            <h1>content</h1>
+        </div>
+        <div class="below">
+            <h1>below</h1>
+        </div>
+    </div>
+
+    <!-- Signup overlay -->
+    <div id="loginOverlay">
+        <div id="loginOverlayContent">
+            <span class="closeButton">&times;</span>
+            <label for="uname"><b>Username</b></label>
+            <input type="text" placeholder="Enter Username" name="uname" required>
+        
+            <label for="psw"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="psw" required>
+                
+            <label>
+              <input type="checkbox" checked="checked" name="remember"> Remember me
+            </label>
+            <button class="submitButton">Login</button>
+        </div>
+    </div>
+
+    <script src="index.js" type="module" ></script>
+</body>
 </html>

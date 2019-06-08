@@ -24,7 +24,7 @@ impl HttpWebServer
     /// 
     /// 
     /// ```
-    pub fn new(ip: String, port: i32) -> HttpWebServer
+    pub fn new(ip: String, port: i32) -> HttpWebServer 
     {
         let adress = format!("{}:{}", ip, port);
         HttpWebServer{ listener: TcpListener::bind(adress).unwrap() }
@@ -57,7 +57,6 @@ impl HttpWebServer
         stream.read(&mut buffer).unwrap();
 
         let msg = String::from_utf8_lossy(&buffer[..]);
-        
         if msg.starts_with("GET")
         {
             self.handle_get_request(msg.to_string(), &mut stream);
@@ -101,6 +100,7 @@ impl HttpWebServer
 
         // get fileName
         let file_name = a[1].to_string();
+        println!("file_name: {}", file_name);
 
         if file_name == "/"
         {
@@ -125,19 +125,35 @@ impl HttpWebServer
     fn get_response_message_u8(&self, file_name: String) -> Vec<u8>
     {
         // Set 200 Ok as deafult if there is an error (usually a not found error) change response to error headers.
-        let mut response = "HTTP/1.1 200 OK\r\n\r\n".to_string().into_bytes();
+        let mut response = "HTTP/1.1 200 OK\r\n".to_string().into_bytes();
         let mut file_data = match fs::read(format!("htmlFiles\\{}", file_name))
         {
             Ok(file) => file,
             Err(_) =>
             {
-                response = "HTTP/1.1 404 NOT FOUND\r\n\r\n".to_string().into_bytes();
+                response = "HTTP/1.1 404 NOT FOUND\r\n".to_string().into_bytes();
                 fs::read("htmlFiles\\404_not_found.html").unwrap()
             }
         };
 
+        // TODO: Add a json file with each type.
+        if file_name.ends_with(".js")
+        {
+            response.append(&mut "Content-type: application/javascript\r\n\r\n".to_string().into_bytes());
+        }
+        if file_name.ends_with(".ts")
+        {
+            response.append(&mut "Content-type: text/x.typescript\n\r\n".to_string().into_bytes());
+        }
+        else
+        {
+            response.append(&mut "\r\n".to_string().into_bytes());
+        }
+
         // Append data to the headers
         response.append(&mut file_data);
+        
+        println!("Response: {}", String::from_utf8_lossy(&response[..]).to_string());
 
         response
     }
