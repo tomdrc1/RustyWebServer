@@ -20,7 +20,7 @@ impl HttpWebServer
     /// 
     /// ```
     /// // Set up a server on localhost with port 8080
-    /// let HttpWebServerInstance = HttpWebServer::new("127.0.0.1", 8080); 
+    /// let http_web_server = HttpWebServer::new("127.0.0.1".to_string(), 8080); 
     /// 
     /// 
     /// ```
@@ -36,10 +36,10 @@ impl HttpWebServer
     /// 
     /// ```
     /// // Set up a server on localhost with port 8080
-    /// let HttpWebServerInstance = HttpWebServer::new("127.0.0.1", 8080); 
+    /// let http_web_server = HttpWebServer::new("127.0.0.1".to_string(), 8080); 
     /// 
     /// // Will now listen forever for incoming clients.
-    /// HttpWebServerInstance.listen();
+    /// http_web_server.listen();
     /// 
     /// ```
     pub fn listen(&self) 

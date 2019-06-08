@@ -36,7 +36,6 @@ async function main()
     {
         loginOverlay.style.display = "none";
         console.log(sessionStorage.getItem('status'));
-        console.log(wasm.calc_primes(200));
     }
 
     window.onclick = function(event)
