@@ -56,10 +56,11 @@ impl HttpWebServer
         let mut buffer = [0; 512];
         stream.read(&mut buffer).unwrap();
 
-        let msg = String::from_utf8_lossy(&buffer[..]);
+        let msg = String::from_utf8_lossy(&buffer[..]).to_string();
+
         if msg.starts_with("GET")
         {
-            self.handle_get_request(msg.to_string(), &mut stream);
+            self.handle_get_request(msg, &mut stream);
         }
     }
 
