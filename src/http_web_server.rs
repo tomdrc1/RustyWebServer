@@ -97,10 +97,10 @@ impl HttpWebServer
     /// * `msg_from_client` - A string that holds the message a client has sent
     fn get_file_name(&self, msg_from_client: String) -> String
     {
-        let a: Vec<&str> = msg_from_client.split(" ").collect();
+        let parsed_msg: Vec<&str> = msg_from_client.split(" ").collect();
 
         // get fileName
-        let file_name = a[1].to_string();
+        let file_name = parsed_msg[1].to_string();
         println!("file_name: {}", file_name);
 
         if file_name == "/"
