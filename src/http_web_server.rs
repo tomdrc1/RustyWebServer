@@ -2,6 +2,10 @@ use std::net::{TcpListener, TcpStream};
 use std::io::prelude::*;
 use std::fs;
 
+const API_IP: &str = "127.0.0.1";
+const API_PORT: u16 = 8081;
+const BUFFER_SIZE: usize = 1024;
+
 pub struct HttpWebServer
 {
     listener: TcpListener
@@ -26,8 +30,10 @@ impl HttpWebServer
     /// ```
     pub fn new(ip: String, port: i32) -> HttpWebServer 
     {
-        let adress = format!("{}:{}", ip, port);
-        HttpWebServer{ listener: TcpListener::bind(adress).unwrap() }
+        let address = format!("{}:{}", ip, port);
+        let api_address = format!("{}:{}", API_IP, API_PORT);
+
+        HttpWebServer{ listener: TcpListener::bind(address).unwrap()}
     }
 
     /// Listens for incoming clients forever
@@ -53,16 +59,74 @@ impl HttpWebServer
     /// Will handle the client. Private function to help the code be cleaner
     fn handle_client(&self, mut stream: TcpStream)
     {
-        let mut buffer = [0; 512];
+        let mut buffer = [0; BUFFER_SIZE];
         stream.read(&mut buffer).unwrap();
 
         let msg = String::from_utf8_lossy(&buffer[..]).to_string();
-
-        if msg.starts_with("GET")
+        
+        
+        if self.is_api(&msg)
+        {
+            self.send_to_api(msg, &mut stream);
+        }
+        else if msg.starts_with("GET")
         {
             self.handle_get_request(msg, &mut stream);
         }
     }
+
+    /// This function will check if the message the server has gotten is actually ment for the API server and not the webserver
+    /// 
+    /// # Argumnets
+    /// 
+    /// * `msg_from_client` - A string refrence that holds the message the client has sent
+    /// 
+    /// # Example
+    /// ```
+    /// if self.is_api(&msg)
+    /// {
+    ///     self.send_to_api(msg, &mut stream);
+    /// }
+    /// ```
+    fn is_api(&self, msg_from_client: &String) -> bool
+    {
+        let parsed_msg: Vec<&str> = msg_from_client.split(" ").collect();
+        let parsed_request: Vec<&str> = parsed_msg[1].split("/").collect();
+
+        parsed_request[1] == "API"
+    }
+
+    /// Will send the message to the api and will return the answer from the api to the user
+    /// 
+    /// # Argumnets
+    /// 
+    /// * `msg_from_client` - A string that contains the message from the client
+    /// * `client_stream` - A mutable refrence of a TcpStream (This is the client's stream)
+    /// 
+    /// # Example
+    /// ```
+    /// if self.is_api(&msg)
+    /// {
+    ///     self.send_to_api(msg, &mut stream);
+    /// }
+    /// ```
+    fn send_to_api(&self, msg_from_client: String, client_stream: &mut TcpStream)
+    {
+        let api_address = format!("{}:{}", API_IP, API_PORT);
+        let mut api_connection = TcpStream::connect(api_address).unwrap();
+
+        api_connection.write(msg_from_client.as_bytes()).unwrap();
+        api_connection.flush().unwrap();
+        
+        let mut buffer = [0; BUFFER_SIZE];
+        api_connection.read(&mut buffer).unwrap();
+
+        let mut msg = String::from_utf8_lossy(&buffer[..]).to_string();
+        msg = msg.trim_matches(char::from(0)).to_string(); // Get rid of NULL
+
+        client_stream.write(msg.as_bytes()).unwrap();
+        client_stream.flush().unwrap();
+    }   
 
     /// Will handle the request if it is an HTTP GET request. Private function to help the code be cleaner
     /// 
@@ -141,10 +205,6 @@ impl HttpWebServer
         if file_name.ends_with(".js")
         {
             response.append(&mut "Content-type: application/javascript\r\n\r\n".to_string().into_bytes());
-        }
-        if file_name.ends_with(".ts")
-        {
-            response.append(&mut "Content-type: text/x.typescript\n\r\n".to_string().into_bytes());
         }
         else
         {

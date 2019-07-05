@@ -6,13 +6,13 @@ let wasm;
 
 export async function init()
 {
-    let r = await fetch('wasm_file.wasm');
+    let r = await fetch('api_connection.wasm');
     let bytes = await r.arrayBuffer();
     let res = await WebAssembly.instantiate(bytes, importObject);
     wasm = res.instance.exports;
 }
 
-export async function calc(place)
+export async function get_user(username)
 {
-    return wasm.calc(place);
+    return wasm.get_user(username);
 }

@@ -1,10 +1,7 @@
-import * as wasm from "./wasm_file.js"
-
 main();
 
-async function main()
+function main()
 {
-    await wasm.init();
     var loginOverlay = document.getElementById("loginOverlay");
     var span = document.getElementsByClassName("closeButton")[0];
     var loginButton = document.getElementById("loginButton");
@@ -23,6 +20,13 @@ async function main()
     {
         var isLoginSuccessful = true;
 
+        $.post("http://83.130.85.23/LOGIN", {
+            username: "TheDiamondOr",
+            password: "pwd"
+        },
+        function(data, status){
+            alert("Data: " + data + "\nStatus: " + status);
+        });
         if (!isLoginSuccessful)
         {
             return;
@@ -42,9 +46,7 @@ async function main()
     {
         if (event.target == loginOverlay)
         {
-        loginOverlay.style.display = "none";
+            loginOverlay.style.display = "none";
         }
     }
-
-    console.log(await wasm.calc(500));
 }
