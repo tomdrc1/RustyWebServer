@@ -51,14 +51,14 @@ function main()
         xhttp.open("POST", "/API/REGISTER", false);
         xhttp.send("{\"username\":\"" + username + "\", \"password\":\"" + password + "\", \"email\":\"" + email + "\"}");
 
-        if (xhttp.status != 200)
+        if (xhttp.status != 201)
         {
             return;
         }
 
-        sessionStorage.setItem('status','loggedIn');
         window.location.replace("/");
     }
+
     document.getElementsByClassName("closeButton")[0].onclick = function()
     {
         loginOverlay.style.display = "none";
@@ -69,6 +69,7 @@ function main()
     {
         signupOverlay.style.display = "none";
     }
+    
     window.onclick = function(event)
     {
         if (event.target == loginOverlay)
