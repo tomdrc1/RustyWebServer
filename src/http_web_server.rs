@@ -31,7 +31,6 @@ impl HttpWebServer
     pub fn new(ip: String, port: i32) -> HttpWebServer 
     {
         let address = format!("{}:{}", ip, port);
-        let api_address = format!("{}:{}", API_IP, API_PORT);
 
         HttpWebServer{ listener: TcpListener::bind(address).unwrap()}
     }
@@ -64,7 +63,6 @@ impl HttpWebServer
 
         let msg = String::from_utf8_lossy(&buffer[..]).to_string();
         
-        
         if self.is_api(&msg)
         {
             self.send_to_api(msg, &mut stream);
@@ -91,6 +89,12 @@ impl HttpWebServer
     fn is_api(&self, msg_from_client: &String) -> bool
     {
         let parsed_msg: Vec<&str> = msg_from_client.split(" ").collect();
+
+        if parsed_msg.len() < 2
+        {
+            return false;
+        }
+
         let parsed_request: Vec<&str> = parsed_msg[1].split("/").collect();
 
         parsed_request[1] == "API"
@@ -163,9 +167,7 @@ impl HttpWebServer
     {
         let parsed_msg: Vec<&str> = msg_from_client.split(" ").collect();
 
-        // get fileName
         let file_name = parsed_msg[1].to_string();
-        println!("file_name: {}", file_name);
 
         if file_name == "/"
         {
@@ -201,7 +203,6 @@ impl HttpWebServer
             }
         };
 
-        // TODO: Add a json file with each type.
         if file_name.ends_with(".js")
         {
             response.append(&mut "Content-type: application/javascript\r\n\r\n".to_string().into_bytes());
@@ -213,8 +214,6 @@ impl HttpWebServer
 
         // Append data to the headers
         response.append(&mut file_data);
-        
-        println!("Response: {}", String::from_utf8_lossy(&response[..]).to_string());
 
         response
     }
