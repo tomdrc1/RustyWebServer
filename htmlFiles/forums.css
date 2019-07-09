@@ -1,39 +1,14 @@
-html, body
-{
-    height: 99%;
-}
-
 .grid-container
 {
     display: grid;
     height: 100%;
-    grid-template-rows: 5% 2fr 10%; 
-    grid-template-areas: "Title Title Title"
-                         "Content Content Content"
-                         "below below below"
+    grid-template-rows: 5fr 3%;
+    grid-template-columns: 10% 80% 10%;
+    grid-template-areas: ". Title Menu"
+                         ". List ."
 }
 
-.headers
-{
-    background-color: aqua;
-    grid-area: Title;
-}
-
-.content
-{
-    background-color: green;
-    grid-area: Content;
-    height: 100%;
-}
-
-.below
-{
-    background-color: red;
-    grid-area: below;
-}
-
-/* Play with this to style the login button */
-#loginButton
+#createForumButton
 {
     float: right;
     border: none;
@@ -46,30 +21,21 @@ html, body
     display: inline-block;
 }
 
-/* Play with this to style the signup button */
-#signupButton
+#creteForumButton:hover
 {
-    float: right;
-    border: none;
-    color: white;
-    background-color: lightgreen;
-    padding: 15px 25px;
-    text-align: center;
-    font-size: 16px;
-    cursor: pointer;
-    display: inline-block;
+    background-color: green;   
 }
 
-#loginButton:hover
+#Menu
 {
-    background-color: green;
+    grid-area: Menu;
 }
 
-#signupButton:hover
+#ForumContent
 {
-    background-color: green;
+    padding-bottom: 40%;
+    padding-right: 80%;
 }
-
 .overlay
 {
     display: none;
@@ -91,6 +57,12 @@ html, body
     padding: 20px;
     border: 1px solid #888;
     width: 50%; /* Could be more or less, depending on screen size */
+    height: 60%;
+}
+
+#List
+{
+    grid-area: List;
 }
 
 .closeButton
@@ -112,4 +84,23 @@ span.psw
 {
     float: right;
     padding-top: 16px;
+}
+
+table
+{
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th 
+{
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even)
+{
+    background-color: #dddddd;
 }

@@ -7,12 +7,6 @@ function main()
     var signupButton = document.getElementById("signupButton");
     var signupOverlay = document.getElementById("signupOverlay");
 
-    if (sessionStorage.getItem('status') != "loggedIn")
-    {
-        loginButton.style.display = "inline-block";
-        signupButton.style.display = "inline-block";
-    }
-
     loginButton.onclick = function()
     {
         loginOverlay.style.display = "block";
@@ -23,6 +17,7 @@ function main()
         signupOverlay.style.display = "block";
     }
 
+    //Login
     document.getElementsByClassName("submitButton")[0].onclick = function()
     {
         var xhttp = new XMLHttpRequest();
@@ -37,10 +32,11 @@ function main()
             return;
         }
 
-        sessionStorage.setItem('status','loggedIn');
-        window.location.replace("/");
+        document.cookie = JSON.parse(xhttp.responseText)["token"];
+        window.location.replace("/home.html");
     }
 
+    //Register
     document.getElementsByClassName("submitButton")[1].onclick = function()
     {
         var xhttp = new XMLHttpRequest();
@@ -62,19 +58,10 @@ function main()
     document.getElementsByClassName("closeButton")[0].onclick = function()
     {
         loginOverlay.style.display = "none";
-        console.log(sessionStorage.getItem('status'));
     }
 
     document.getElementsByClassName("closeButton")[1].onclick = function()
     {
         signupOverlay.style.display = "none";
-    }
-    
-    window.onclick = function(event)
-    {
-        if (event.target == loginOverlay)
-        {
-            loginOverlay.style.display = "none";
-        }
     }
 }
