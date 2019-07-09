@@ -27,11 +27,12 @@ function main()
         xhttp.open("POST", "/API/LOGIN", false);
         xhttp.send("{\"username\":\"" + username + "\", \"password\":\"" + password + "\"}");
 
-        if (xhttp.status != 200)
+        if (xhttp.status == 404 || xhttp.status == 401)
         {
+            alert("Username or password is incorrect!");
             return;
         }
-
+        
         document.cookie = JSON.parse(xhttp.responseText)["token"];
         window.location.replace("/home.html");
     }

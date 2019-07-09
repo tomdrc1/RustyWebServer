@@ -2,6 +2,8 @@ main();
 
 function main()
 {
+    is_authorized();
+
     var forumsTable = document.getElementById("forums-list");
     var json_headers_string = get_headers();
     var json_headers = JSON.parse(json_headers_string);
@@ -53,11 +55,6 @@ function get_headers()
     xhttp.open("GET", "/API/FORUM_HEADERS", false);
     xhttp.send();
 
-    if (xhttp.status == 401)
-    {
-        window.location.replace("/unauthorized.html")
-    }
-
     return xhttp.responseText;
 }
 
@@ -81,6 +78,19 @@ function get_current_date()
     today = mm + '/' + dd + '/' + yyyy;
 
     return today.toString();
+}
+
+function is_authorized()
+{
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.open("GET", "/API/IS_AUTHORIZED", false);
+    xhttp.send();
+
+    if (xhttp.status == 401)
+    {
+        window.location.replace("/unauthorized.html")
+    }
 }
 
 String.prototype.format = function()
