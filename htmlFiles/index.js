@@ -1,5 +1,3 @@
-main();
-
 function main()
 {
     var loginOverlay = document.getElementById("loginOverlay");
@@ -25,7 +23,7 @@ function main()
         var password = document.getElementById("loginPassword").value;
 
         xhttp.open("POST", "/API/LOGIN", false);
-        xhttp.send("{\"username\":\"" + username + "\", \"password\":\"" + password + "\"}");
+        xhttp.send("{\"username\":\"{0}\", \"password\":\"{1}\"}".format(username, password));
 
         if (xhttp.status == 404 || xhttp.status == 401)
         {
@@ -34,7 +32,7 @@ function main()
         }
         
         document.cookie = JSON.parse(xhttp.responseText)["token"];
-        window.location.replace("/home.html");
+        window.location.replace("/home");
     }
 
     //Register
@@ -46,7 +44,7 @@ function main()
         var email = document.getElementById("signupEmail").value;
 
         xhttp.open("POST", "/API/REGISTER", false);
-        xhttp.send("{\"username\":\"" + username + "\", \"password\":\"" + password + "\", \"email\":\"" + email + "\"}");
+        xhttp.send("{\"username\":\"{0}\", \"password\":\"{1}\", \"email\":\"{2}\"}".format(username, password, email));
 
         if (xhttp.status != 201)
         {
@@ -66,3 +64,14 @@ function main()
         signupOverlay.style.display = "none";
     }
 }
+
+String.prototype.format = function()
+{
+    a = this;
+    for (k in arguments) {
+      a = a.replace("{" + k + "}", arguments[k])
+    }
+    return a
+}
+
+main();

@@ -166,15 +166,18 @@ impl HttpWebServer
     fn get_file_name(&self, msg_from_client: String) -> String
     {
         let mut parsed_msg: Vec<&str> = msg_from_client.split(" ").collect();
-        
+
         parsed_msg = parsed_msg[1].split("?").collect(); // Incase someone tries to mess up the site with data passed through ?
-        let file_name = parsed_msg[0].to_string();
+        let mut file_name = parsed_msg[0].to_string();
 
         if file_name == "/"
         {
             return "index.html".to_string();
         }
-        
+        else if !file_name.contains(".")
+        {
+            file_name += ".html";
+        }
         file_name.replace("/", "")
     }
 

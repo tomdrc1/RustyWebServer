@@ -1,16 +1,17 @@
-main();
-
 function main()
 {
-    is_authorized();
-
     var forumsTable = document.getElementById("forums-list");
     var json_headers_string = get_headers();
     var json_headers = JSON.parse(json_headers_string);
-
-    for (let i = 0; i < json_headers.length; ++i)
+    
+    for (var i = 0; i < json_headers.length; ++i)
     {
         var row = forumsTable.insertRow();
+        row.classList.add("zoom-in");
+        row.onclick = function()
+        {
+            load_forum(this)
+        };
 
         var name = row.insertCell();
         var username = row.insertCell();
@@ -48,6 +49,11 @@ function main()
     }
 }
 
+function load_forum(tableRow)
+{
+    window.location.replace("/forum?{0}&{1}".format(tableRow.cells[0].innerHTML, tableRow.cells[1].innerHTML));
+}
+
 function get_headers()
 {
     var xhttp = new XMLHttpRequest();
@@ -55,6 +61,10 @@ function get_headers()
     xhttp.open("GET", "/API/FORUM_HEADERS", false);
     xhttp.send();
 
+    if (xhttp.status == 401)
+    {
+        window.location.replace("/unauthorized");
+    }
     return xhttp.responseText;
 }
 
@@ -80,19 +90,6 @@ function get_current_date()
     return today.toString();
 }
 
-function is_authorized()
-{
-    var xhttp = new XMLHttpRequest();
-
-    xhttp.open("GET", "/API/IS_AUTHORIZED", false);
-    xhttp.send();
-
-    if (xhttp.status == 401)
-    {
-        window.location.replace("/unauthorized.html")
-    }
-}
-
 String.prototype.format = function()
 {
     a = this;
@@ -101,3 +98,5 @@ String.prototype.format = function()
     }
     return a
 }
+
+main();

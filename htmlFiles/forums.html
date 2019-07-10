@@ -4,11 +4,13 @@
     <meta charset="utf-8">
     <title>Home</title>
     <link rel="stylesheet" type="text/css" href="forums.css">
+    <link rel="stylesheet" type="text/css" href="buttons.css">
+    <link rel="stylesheet" type="text/css" href="overlay.css">
 </head>
 <body>
     <div class="grid-container">
         <div id="Menu">
-            <button id="createForumButton"> Create Forum</button>
+            <button id="createForumButton" class="dataButton"> Create Forum</button>
         </div>
         <div id="List">
             <table id="forums-list">
@@ -23,22 +25,27 @@
 
     <div id="createForumOverlay" class="overlay">
         <div id="createForumOverlayContent" class="overlayContent">
-            <span class="closeButton">&times;</span>
-            <div style="margin: 20px;">
-                <input type="text" placeholder="Enter Title" name="title" id="ForumTitle" required>
-                <select id="ForumCategory">
+            <span class="closeButton" id="closeButtonForum">&times;</span>
+            <div style="margin: 2%;" id="titleSelection">
+                <center><input type="text" placeholder="Enter Title" name="title" id="ForumTitle" required></center>
+                
+                <center>
+                <select id="ForumCategory" style="margin: 1%">
                     <option value="" disabled selected>Select Your Category</option>
                     <option value="Developer">Developer</option>
                     <option value="Food">Food</option>
                     <option value="Games">Games</option>
                     <option value="Tech">Tech</option>
                 </select>
+                </center>
             </div>
-            <div style="margin: 20px; height: 70%;">
-                <input type="text" name="Content" id="ForumContent" placeholder="Enter Content" required >
+            <div style="margin: 2%;" id="content">
+                <textarea id="ForumContent"  name="Content" placeholder="Enter Content" required></textarea>
             </div>
- 
-            <center><button class="submitButton">Create Forum</button></center>
+            
+            <div id="submitButtonForum">
+                <center><button class="submitButton">Create Forum</button></center>
+            </div>
         </div>
     </div>
     <script src="forums.js"></script>

@@ -4,12 +4,14 @@
     <meta charset="utf-8">
     <title>Tom's Social Network</title>
     <link rel="stylesheet" type="text/css" href="index.css">
+    <link rel="stylesheet" type="text/css" href="buttons.css">
+    <link rel="stylesheet" type="text/css" href="overlay.css">
 </head>
 <body>
     <div class="grid-container">
         <div class="headers">
-            <button id="loginButton"> Login</button>
-            <button id="signupButton"> Signup</button>
+            <button id="loginButton" class="dataButton"> Login</button>
+            <button id="signupButton" class="dataButton"> Signup</button>
         </div>
         <div class="content">
             <h1>content</h1>
@@ -23,13 +25,16 @@
     <div id="loginOverlay" class="overlay">
         <div id="loginOverlayContent" class="overlayContent">
             <span class="closeButton">&times;</span>
-            <div style="margin: 20px;">
-                <input type="text" placeholder="Enter Username" name="uname" id="loginUsername" required>
-            </div>
-            <div style="margin: 20px;">
-                <input type="password" placeholder="Enter Password" name="psw" id="loginPassword" required>
-            </div>
-
+            <center>
+                <div style="margin: 20px;">
+                    <input type="text" placeholder="Enter Username" name="uname" id="loginUsername" required>
+                </div>
+            </center>
+            <center>
+                <div style="margin: 20px;">
+                    <input type="password" placeholder="Enter Password" name="psw" id="loginPassword" required>
+                </div>
+            </center>
             <center><button class="submitButton">Login</button></center>
         </div>
     </div>
@@ -38,15 +43,21 @@
     <div id="signupOverlay" class="overlay">
         <div id="signupOverlayContent" class="overlayContent">
                 <span class="closeButton" id="signupCloseButton" >&times;</span>
-                <div style="margin: 20px;">
-                    <input type="text" placeholder="Enter Username" name="uname" id="signupUsername" required>
-                </div>
-                <div style="margin: 20px;">
-                    <input type="password" placeholder="Enter Password" name="psw" id="signupPassword" required>
-                </div>
-                <div style="margin: 20px;">
-                    <input type="text" placeholder="Enter Email" name="email" id="signupEmail" required>
-                </div>
+                <center>
+                    <div style="margin: 20px;">
+                        <input type="text" placeholder="Enter Username" name="uname" id="signupUsername" required>
+                    </div>
+                </center>
+                <center>
+                    <div style="margin: 20px;">
+                        <input type="password" placeholder="Enter Password" name="psw" id="signupPassword" required>
+                    </div>
+                </center>
+                <center>
+                    <div style="margin: 20px;">
+                        <input type="text" placeholder="Enter Email" name="email" id="signupEmail" required>
+                    </div>
+                </center>
                 <center><button class="submitButton">Signup</button></center>
         </div>
     </div>
