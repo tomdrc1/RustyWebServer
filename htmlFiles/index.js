@@ -30,7 +30,11 @@ function main()
             alert("Username or password is incorrect!");
             return;
         }
-        
+        else if (xhttp.status == 400)
+        {
+            alert("Invalid Characters!");
+            return;
+        }
         document.cookie = JSON.parse(xhttp.responseText)["token"];
         window.location.replace("/home");
     }
@@ -46,11 +50,16 @@ function main()
         xhttp.open("POST", "/API/REGISTER", false);
         xhttp.send("{\"username\":\"{0}\", \"password\":\"{1}\", \"email\":\"{2}\"}".format(username, password, email));
 
-        if (xhttp.status != 201)
+        if (xhttp.status == 409)
         {
+            alert("User already exists!");
             return;
         }
-
+        else if (xhttp.status == 400)
+        {
+            alert("Invalid Characters!");
+            return;
+        }
         window.location.replace("/");
     }
 

@@ -46,6 +46,23 @@ function main()
 
         xhttp.open("POST", "/API/CREATE_FORUM", false);
         xhttp.send("{\"name\":\"{0}\", \"username\":\"{1}\", \"date_created\":\"{2}\", \"category\":\"{3}\", \"content\":\"{4}\"}".format(forumTitle, userdata["username"], currentDate, category, forumContent));
+
+        if (xhttp.status == 400)
+        {
+            alert("Invalid Characters!");
+        }
+        else if (xhttp.status == 409)
+        {
+            alert("You already have a forum named \"{0}\"".format(forumTitle));
+        }
+        else if (xhttp.status == 500)
+        {
+            alert("We currently have trouble with our servers, please hang on");
+        }
+        if (xhttp.status == 201)
+        {
+            window.location.replace("/forum?{0}&{1}".format(forumTitle, userdata["username"]));
+        }
     }
 }
 

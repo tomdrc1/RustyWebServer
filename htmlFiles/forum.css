@@ -1,0 +1,60 @@
+body
+{
+    background-color: lightgray;
+}
+
+#contentText
+{
+    width: 100%;   
+}
+
+#content
+{
+    width: 100%;
+}
+
+#title
+{
+    text-align: center;
+    font-size: 60px;
+    top: 0px;
+    grid-area: Title;
+    width: 50%;
+}
+
+.container
+{
+    width: 50%;
+}
+
+#creator
+{
+    text-align: left;
+}
+
+*
+{
+    font-family: 'Roboto', sans-serif;
+}
+
+textarea:hover, 
+input:hover, 
+textarea:active, 
+input:active, 
+textarea:focus, 
+input:focus,
+button:focus,
+button:active,
+button:hover,
+label:focus,
+.btn:active,
+.btn.active
+{
+    outline:0px !important;
+    -webkit-appearance:none;
+}
+
+textarea
+{
+    resize: none;
+}

@@ -1,13 +1,18 @@
 html, body
 {
-    height: 99%;
+    background-color: lightgray;
+}
+
+*
+{
+    font-family: 'Roboto', sans-serif;
 }
 
 .grid-container
 {
     display: grid;
     height: 100%;
-    grid-template-rows: 5% 2fr 10%; 
+    grid-template-rows: 5% 85% 10%; 
     grid-template-areas: "Title Title Title"
                          "Content Content Content"
                          "below below below"
@@ -15,31 +20,17 @@ html, body
 
 .headers
 {
-    background-color: aqua;
     grid-area: Title;
 }
 
 .content
 {
-    background-color: green;
-    grid-area: Content;
     height: 100%;
 }
 
 .below
 {
-    background-color: red;
     grid-area: below;
-}
-
-#loginButton:hover
-{
-    background-color: green;
-}
-
-#signupButton:hover
-{
-    background-color: green;
 }
 
 #loginOverlayContent
