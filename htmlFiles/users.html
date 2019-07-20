@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Users</title>
+    <link rel="stylesheet" type="text/css" href="users.css">
+    <link rel="stylesheet" type="text/css" href="buttons.css">
+    <link rel="stylesheet" type="text/css" href="overlay.css">
+</head>
+<body>
+    <button class="dataButton" id="goBack">Home</button>
+    <br style="line-height:50px;"></br>
+    <center>
+        <table id="users-list">
+            <tr>
+                <th>Username</th>
+            </tr>
+        </table>
+    </center>
+
+    <div id="userOverlay" class="overlay">
+            <div id="userOverlayContent" class="overlayContent">
+                <span class="closeButton" id="userCloseButton" >&times;</span>
+                <center>
+                    <div id="userdata"></div>
+                </center>
+                <center>
+                    <button class="submitButton" id="deleteUserButton"></button>
+                </center>
+            </div>
+        </div>
+    <script src="users.js"></script>
+</body>

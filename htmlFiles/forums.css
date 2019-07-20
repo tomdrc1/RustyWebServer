@@ -46,13 +46,6 @@ body
     height: 100%;
 }
 
-.closeButton:hover, .closeButton:focus
-{
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
-
 .zoom-in
 {
     transition: transform .2s;

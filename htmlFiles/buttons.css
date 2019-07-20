@@ -26,8 +26,41 @@
     top: 0;
 }
 
+.submitButton
+{
+    border: none;
+    color: white;
+    background-color: lightgreen;
+    border-style: solid;
+    border-width: 1px;
+    border-color: grey;
+    padding: 15px 25px;
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform .2s;
+}
+
+.admin
+{
+    display: none;
+}
+
+.submitButton:hover
+{
+    transform: scale(1.05);
+    background-color: green;
+}
+
 .dataButton:hover
 {
     transform: scale(1.05);
     background-color: green;
+}
+
+.closeButton:hover, .closeButton:focus
+{
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }

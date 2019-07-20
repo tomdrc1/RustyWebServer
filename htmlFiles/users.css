@@ -1,0 +1,46 @@
+html, body
+{
+    background-color: lightgray;
+}
+
+*
+{
+    font-family: 'Roboto', sans-serif;
+}
+#userOverlayContent
+{
+    width: 40%;
+    height: 40%;
+}
+.zoom-in
+{
+    transition: transform .2s;
+}
+
+.zoom-in:hover
+{
+    transform: scale(1.05);
+}
+
+table
+{
+    border-collapse: collapse;
+    width: 80%;
+}
+
+td, th 
+{
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr
+{
+    background-color: #f8f8f8;
+}
+
+tr:nth-child(even)
+{
+    background-color: #dddddd;
+}

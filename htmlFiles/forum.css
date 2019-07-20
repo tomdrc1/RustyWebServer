@@ -3,9 +3,10 @@ body
     background-color: lightgray;
 }
 
-#contentText
+.contentTextarea
 {
-    width: 100%;   
+    width: 100%;  
+    font-size: 18px; 
 }
 
 #content
@@ -28,6 +29,11 @@ body
 }
 
 #creator
+{
+    text-align: left;
+}
+
+#createdTime
 {
     text-align: left;
 }

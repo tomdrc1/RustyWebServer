@@ -45,13 +45,6 @@ html, body
     height: 20%; 
 }
 
-.closeButton:hover, .closeButton:focus
-{
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
-
 span.psw 
 {
     float: right;

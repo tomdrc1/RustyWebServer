@@ -1,6 +1,8 @@
 function main()
 {
     setup_goback_button();
+    setup_comment_area();
+    setup_comment_button();
     var forum_args = window.location.href.split('?')[1].split("&");
     
     var forum_name = forum_args[0];
@@ -18,7 +20,58 @@ function main()
     title.style.textDecoration = "underline";
 
     var creator = document.getElementById("creator");
-    creator.innerHTML = forum_data["username"] + " wrote:";
+    creator.innerHTML = forum_data["author"] + " wrote:";
+
+    var created_time = document.getElementById("createdTime");
+    created_time.innerHTML = "Originally posted at: " + forum_data["date_created"];
+
+    var comments = JSON.parse(get_forum_comments());
+    var container = document.getElementsByClassName("container")[0];
+
+    for (var i = 0; i < comments.length; ++i)
+    {
+        var commented = document.createElement("div");
+        commented.style = "text-align: left;"
+        commented.innerHTML = comments[i]["author"] + " commented:";
+
+        container.appendChild(commented);
+
+        var comment_area = document.createElement("textarea");
+        comment_area.className = "contentTextarea";
+        comment_area.readOnly = true;
+        comment_area.value = comments[i]["content"];
+
+        container.appendChild(comment_area);
+
+        var date_created = document.createElement("div");
+        date_created.style = "text-align: left;"
+        date_created.innerHTML = "Originally commented at: " + comments[i]["date_created"];
+
+        container.appendChild(date_created);
+
+        var line_break = document.createElement("hr");
+        container.appendChild(line_break);
+
+        var space = document.createElement("br");
+        space.style = "line-height: 40px;";
+        container.appendChild(space);
+    }
+}
+
+function get_forum_comments()
+{
+    var xhttp = new XMLHttpRequest();
+    var forum_args = window.location.href.split('?')[1].split("&");
+    
+    var forum_name = forum_args[0];
+    var forum_creator = forum_args[1];
+
+    var forum_id = get_forum_id(forum_name, forum_creator);
+
+    xhttp.open("GET", "/API/FORUM_COMMENTS/{0}".format(forum_id), false);
+    xhttp.send();
+
+    return xhttp.responseText;
 }
 
 function setup_goback_button()
@@ -31,6 +84,66 @@ function setup_goback_button()
     }
 }
 
+function setup_comment_area()
+{
+    var commentArea = document.getElementById("commentArea");
+
+    commentArea.onkeyup = function()
+    {
+        textAreaAdjust(this);
+    }
+}
+
+function setup_comment_button()
+{
+    var commentButton = document.getElementById("commentButton");
+
+    commentButton.onclick = function()
+    {
+        var forum_args = window.location.href.split('?')[1].split("&");
+    
+        var forum_name = forum_args[0];
+        var forum_creator = forum_args[1];
+
+        var forum_id = get_forum_id(forum_name, forum_creator);
+        var date = get_current_date();
+        var author = JSON.parse(get_user_by_cookie())["username"];
+        var content = document.getElementById("commentArea").value.replace(/"/g, '\\$&');
+
+        var xhttp = new XMLHttpRequest();
+        
+        xhttp.open("POST", "/API/CREATE_FORUM_COMMENT");
+        xhttp.send("{\"author\":\"{0}\", \"content\":\"{1}\", \"date_created\":\"{2}\", \"forum_id\":{3}}".format(author, content, date, forum_id));
+        
+        if (xhttp.status == 404)
+        {
+            alert("Empty field!");
+        }
+        else if (xhttp.status == 400)
+        {
+            alert("Invalid data!");
+        }
+        else if (xhttp.status == 500)
+        {
+            alert("We currently have trouble with our servers, please hang on");
+        }
+
+        location.reload();
+    }
+}
+
+function get_current_date()
+{
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+
+    today = mm + '/' + dd + '/' + yyyy;
+
+    return today.toString();
+}
+
 function textAreaAdjust(o) 
 {
     o.style.height = "1px";
@@ -40,9 +153,8 @@ function textAreaAdjust(o)
 function get_forum_data(forum_name, forum_creator)
 {
     var xhttp = new XMLHttpRequest();
-    var location = "/API/FORUM_BY_NAME_AND_CREATOR/{0}&{1}".format(forum_name, forum_creator);
 
-    xhttp.open("GET", location, false);
+    xhttp.open("GET", "/API/FORUM_BY_NAME_AND_CREATOR/{0}&{1}".format(forum_name, forum_creator), false);
     xhttp.send();
 
     if (xhttp.status == 401)
@@ -58,6 +170,22 @@ function get_forum_data(forum_name, forum_creator)
     return xhttp.responseText;
 }
 
+function get_forum_id(forum_name, forum_creator)
+{
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.open("GET", "/API/FORUM_ID/{0}&{1}".format(forum_name, forum_creator), false);
+    xhttp.send();
+
+    if (xhttp.status == 401)
+    {
+        window.location.replace("/unauthorized");
+    }
+
+    var json_data = JSON.parse(xhttp.responseText);
+    return json_data["id"];
+}
+
 String.prototype.format = function()
 {
     a = this;
@@ -65,6 +193,16 @@ String.prototype.format = function()
     a = a.replace("{" + k + "}", arguments[k])
     }
     return a
+}
+
+function get_user_by_cookie()
+{
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.open("GET", "/API/USER_BY_AUTH", false);
+    xhttp.send();
+
+    return window.atob(xhttp.responseText);
 }
 
 main();

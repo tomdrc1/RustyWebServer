@@ -2,3 +2,8 @@
 {
     font-family: 'Roboto', sans-serif;
 }
+
+html, body
+{
+    background-color: lightgray;
+}

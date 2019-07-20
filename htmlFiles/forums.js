@@ -1,5 +1,6 @@
 function main()
 {
+    setup_goback_button();
     var forumsTable = document.getElementById("forums-list");
     var json_headers_string = get_headers();
     var json_headers = JSON.parse(json_headers_string);
@@ -39,13 +40,13 @@ function main()
     {
         var xhttp = new XMLHttpRequest();
         var userdata = JSON.parse(get_user_by_cookie());
-        var forumContent = document.getElementById("ForumContent").value;
-        var forumTitle = document.getElementById("ForumTitle").value;
-        var category = document.getElementById("ForumCategory").selectedOptions[0].text
+        var forumContent = document.getElementById("ForumContent").value.replace(/"/g, '\\$&');
+        var forumTitle = document.getElementById("ForumTitle").value.replace(/"/g, '\\$&');;
+        var category = document.getElementById("ForumCategory").selectedOptions[0].text.replace(/"/g, '\\$&');
         var currentDate = get_current_date();
 
         xhttp.open("POST", "/API/CREATE_FORUM", false);
-        xhttp.send("{\"name\":\"{0}\", \"username\":\"{1}\", \"date_created\":\"{2}\", \"category\":\"{3}\", \"content\":\"{4}\"}".format(forumTitle, userdata["username"], currentDate, category, forumContent));
+        xhttp.send("{\"name\":\"{0}\", \"author\":\"{1}\", \"date_created\":\"{2}\", \"category\":\"{3}\", \"content\":\"{4}\"}".format(forumTitle, userdata["username"], currentDate, category, forumContent));
 
         if (xhttp.status == 400)
         {
@@ -59,9 +60,17 @@ function main()
         {
             alert("We currently have trouble with our servers, please hang on");
         }
-        if (xhttp.status == 201)
+        else if (xhttp.status == 404)
         {
-            window.location.replace("/forum?{0}&{1}".format(forumTitle, userdata["username"]));
+            alert("Empty field!");
+        }
+        else if (xhttp.status == 406)
+        {
+            alert("Please select a category!");
+        }
+        else if (xhttp.status == 201)
+        {
+            window.location.replace("/forum?{0}&{1}".format(forumTitle.replace(/\\/g, ''), userdata["username"]));
         }
     }
 }
@@ -83,6 +92,16 @@ function get_headers()
         window.location.replace("/unauthorized");
     }
     return xhttp.responseText;
+}
+
+function setup_goback_button()
+{
+    var button = document.getElementById("goBack");
+
+    button.onclick = function()
+    {
+        window.location.replace("/home");
+    }
 }
 
 function get_user_by_cookie()

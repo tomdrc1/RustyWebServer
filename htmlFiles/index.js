@@ -60,6 +60,11 @@ function main()
             alert("Invalid Characters!");
             return;
         }
+        else if (xhttp.status == 404)
+        {
+            alert("Empty field!");
+            return;
+        }
         window.location.replace("/");
     }
 
@@ -72,6 +77,8 @@ function main()
     {
         signupOverlay.style.display = "none";
     }
+
+    get_amount_of_logged_users()
 }
 
 String.prototype.format = function()
@@ -81,6 +88,17 @@ String.prototype.format = function()
       a = a.replace("{" + k + "}", arguments[k])
     }
     return a
+}
+
+function get_amount_of_logged_users()
+{
+    var loggedCounter = document.getElementById("loggedCounter");
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "API/LOGGED_AMOUNT", false);
+    xhttp.send();
+
+    loggedCounter.innerHTML = "There are currently {0} users that are connected".format(xhttp.responseText);
 }
 
 main();
