@@ -65,6 +65,22 @@ function main()
             alert("Empty field!");
             return;
         }
+        else if (xhttp.status == 412)
+        {
+            if (xhttp.responseText == "BAD USERNAME")
+            {
+                alert("Your username doesn't meet our requirements!\nYour username should be atleast 3 letters long and and not start with a number or a symbol!");
+            }
+            else if (xhttp.responseText == "BAD PASSWORD")
+            {
+                alert("Your password doesn't meet our requirements!\nYour password should be at least 8 letters long and in english!");
+            }
+            else if (xhttp.responseText == "BAD EMAIL")
+            {
+                alert("Invalid email!");
+            }
+            return;
+        }
         window.location.replace("/");
     }
 

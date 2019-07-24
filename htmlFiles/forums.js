@@ -1,28 +1,12 @@
 function main()
 {
     setup_goback_button();
-    var forumsTable = document.getElementById("forums-list");
+    setup_search_button();
     var json_headers_string = get_headers();
     var json_headers = JSON.parse(json_headers_string);
+
+    setup_headers(json_headers);
     
-    for (var i = 0; i < json_headers.length; ++i)
-    {
-        var row = forumsTable.insertRow();
-        row.classList.add("zoom-in");
-        row.onclick = function()
-        {
-            load_forum(this)
-        };
-
-        var name = row.insertCell();
-        var username = row.insertCell();
-        var date_created = row.insertCell();
-
-        name.innerHTML = json_headers[i]["name"];
-        username.innerHTML = json_headers[i]["username"];
-        date_created.innerHTML = json_headers[i]["date_created"];
-    }
-
     var createForumButton = document.getElementById("createForumButton");
     var createForumOverlay = document.getElementById("createForumOverlay");
 
@@ -36,7 +20,7 @@ function main()
         createForumOverlay.style.display = "none";
     }
 
-    document.getElementsByClassName("submitButton")[0].onclick = function()
+    document.getElementById("submitForumButton").onclick = function()
     {
         var xhttp = new XMLHttpRequest();
         var userdata = JSON.parse(get_user_by_cookie());
@@ -73,6 +57,36 @@ function main()
             window.location.replace("/forum?{0}&{1}".format(forumTitle.replace(/\\/g, ''), userdata["username"]));
         }
     }
+}
+
+function setup_headers(json_headers)
+{
+    var forumsTable = document.getElementById("forums-list");
+    
+    var rows_length = forumsTable.rows.length;
+    for (var i = 1; i < rows_length; ++i)
+    {
+        forumsTable.deleteRow(-1);
+    }
+    
+    for (var i = 0; i < json_headers.length; ++i)
+    {
+        var row = forumsTable.insertRow();
+        row.classList.add("zoom-in");
+        row.onclick = function()
+        {
+            load_forum(this)
+        };
+
+        var name = row.insertCell();
+        var username = row.insertCell();
+        var date_created = row.insertCell();
+
+        name.innerHTML = json_headers[i]["name"];
+        username.innerHTML = json_headers[i]["username"];
+        date_created.innerHTML = json_headers[i]["date_created"];
+    }
+    console.log(forumsTable.rows.length);
 }
 
 function load_forum(tableRow)
@@ -124,6 +138,25 @@ function get_current_date()
     today = mm + '/' + dd + '/' + yyyy;
 
     return today.toString();
+}
+
+function setup_search_button()
+{
+    var title_search_button = document.getElementById("titleSearchButton");
+    var category_selection = document.getElementById("categorySearch");
+
+    title_search_button.onclick = function()
+    {
+        var title_search_box = document.getElementById("titleSearch");
+        var xhttp = new XMLHttpRequest();
+
+        xhttp.open("GET", "/API/FORUM_HEADERS_BY_SEARCH/{0}&{1}".format(title_search_box.value, category_selection.value), false);
+        xhttp.send();
+
+        var json_headers = JSON.parse(xhttp.responseText);
+
+        setup_headers(json_headers);
+    }
 }
 
 String.prototype.format = function()

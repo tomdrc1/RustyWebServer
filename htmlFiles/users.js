@@ -3,6 +3,7 @@ var user_overlay = document.getElementById("userOverlay");
 function main()
 {
     setup_goback_button();
+    setup_user_serach();
     var username = JSON.parse(get_user_by_cookie())["username"];
     if (!is_admin(username))
     {
@@ -10,7 +11,29 @@ function main()
     }
 
     var users = JSON.parse(get_users());
+    setup_users_table(users);
+
+}
+
+function setup_goback_button()
+{
+    var button = document.getElementById("goBack");
+
+    button.onclick = function()
+    {
+        window.location.replace("/home");
+    }
+}
+
+function setup_users_table(users)
+{
     var users_table = document.getElementById("users-list");
+
+    var rows_length = users_table.rows.length;
+    for (var i = 1; i < rows_length; ++i)
+    {
+        users_table.deleteRow(-1);
+    }
 
     for (var i = 0; i < users.length; ++i)
     {
@@ -29,13 +52,21 @@ function main()
     }
 }
 
-function setup_goback_button()
+function setup_user_serach()
 {
-    var button = document.getElementById("goBack");
+    var user_search_button = document.getElementById("userSearchButton");
 
-    button.onclick = function()
+    user_search_button.onclick = function()
     {
-        window.location.replace("/home");
+        var user_search_box = document.getElementById("userSearch");
+        var xhttp = new XMLHttpRequest();
+
+        xhttp.open("GET", "/API/USERS_BY_QUERY/{0}".format(user_search_box.value), false);
+        xhttp.send();
+
+        var users = JSON.parse(xhttp.responseText);
+
+        setup_users_table(users);
     }
 }
 
@@ -53,7 +84,12 @@ function user_menu(tableRow)
         xhttp.open("DELETE", "API/USER/{0}".format(username), false);
         xhttp.send();
         
-        if (xhttp.status == 200)
+        if (xhttp.status == 401)
+        {
+            alert("You can't delete an admin!");
+        }
+
+        else if (xhttp.status == 200)
         {
             alert("You have deleted {0} successfuly!".format(username));
             window.location.reload();

@@ -7,3 +7,9 @@ html, body
 {
     background-color: lightgray;
 }
+
+#changePasswordOverlayContent
+{
+    width: 20%;
+    height: 15%;
+}

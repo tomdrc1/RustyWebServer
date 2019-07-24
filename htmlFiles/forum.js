@@ -3,6 +3,7 @@ function main()
     setup_goback_button();
     setup_comment_area();
     setup_comment_button();
+    setup_delete_button();
     var forum_args = window.location.href.split('?')[1].split("&");
     
     var forum_name = forum_args[0];
@@ -94,6 +95,54 @@ function setup_comment_area()
     }
 }
 
+function setup_delete_button()
+{
+    var deleteButton = document.getElementById("deleteForumButton");
+
+    var forum_args = window.location.href.split('?')[1].split("&");
+    
+    var forum_name = forum_args[0];
+    var forum_creator = forum_args[1];
+
+    var current_user = JSON.parse(get_user_by_cookie())["username"];
+
+    if (forum_creator != current_user && !is_admin(current_user))
+    {
+        return;
+    }
+
+    deleteButton.style.display = "inline";
+
+    deleteButton.onclick = function()
+    {
+        var xhttp = new XMLHttpRequest();
+
+        xhttp.open("DELETE", "API/DELETE_FORUM/{0}&{1}".format(forum_name, forum_creator), false);
+        xhttp.send();
+        
+        if (xhttp.status == 401)
+        {
+            alert("You have no authority to delete this post!");
+        }
+
+        if (xhttp.status == 200)
+        {
+            window.location.replace("/forums");
+        }
+    }
+    
+}
+
+function is_admin(username)
+{
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.open("GET", "API/IS_ADMIN/{0}".format(username), false);
+    xhttp.send();
+
+    return (xhttp.status == 200);
+}
+
 function setup_comment_button()
 {
     var commentButton = document.getElementById("commentButton");
@@ -112,7 +161,7 @@ function setup_comment_button()
 
         var xhttp = new XMLHttpRequest();
         
-        xhttp.open("POST", "/API/CREATE_FORUM_COMMENT");
+        xhttp.open("POST", "/API/CREATE_FORUM_COMMENT", false);
         xhttp.send("{\"author\":\"{0}\", \"content\":\"{1}\", \"date_created\":\"{2}\", \"forum_id\":{3}}".format(author, content, date, forum_id));
         
         if (xhttp.status == 404)

@@ -9,6 +9,11 @@ body
     font-size: 18px; 
 }
 
+#deleteForumButton
+{
+    display: none;
+}
+
 #content
 {
     width: 100%;

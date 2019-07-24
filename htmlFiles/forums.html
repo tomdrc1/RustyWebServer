@@ -10,7 +10,24 @@
 <body>
     <button class="dataButton" id="goBack">Home</button>
     <button id="createForumButton" class="dataButton"> Create Forum</button>
-    <br style="line-height:50px;"></br>
+    <br style="line-height: 75px;"></br>
+    <center>
+        <input type="text" placeholder="Enter Title" name="titleSearch" id="titleSearch" required>
+        <select id="categorySearch" style="margin: 1%">
+            <option value="" disabled selected>Select Your Category</option>
+            <option value="Developer">Developer</option>
+            <option value="Food">Food</option>
+            <option value="Games">Games</option>
+            <option value="Tech">Tech</option>
+        </select>
+    </center>
+    <center>
+        <button class="submitButton" id="titleSearchButton">Search</button>
+    </center>
+
+    
+
+    <br style="line-height: 25px;"></br>
     <center>
         <table id="forums-list">
             <tr>
@@ -20,6 +37,7 @@
             </tr>
         </table>
     </center>
+
     <div id="createForumOverlay" class="overlay">
         <div id="createForumOverlayContent" class="overlayContent">
             <span class="closeButton" id="closeButtonForum">&times;</span>
@@ -41,7 +59,7 @@
             </div>
             
             <div id="submitButtonForum">
-                <center><button class="submitButton">Create Forum</button></center>
+                <center><button class="submitButton" id="submitForumButton">Create Forum</button></center>
             </div>
         </div>
     </div>

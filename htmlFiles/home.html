@@ -5,6 +5,7 @@
     <title>Home</title>
     <link rel="stylesheet" type="text/css" href="home.css">
     <link rel="stylesheet" type="text/css" href="buttons.css">
+    <link rel="stylesheet" type="text/css" href="overlay.css">
 </head>
 <body>
     <button class="dataButton" id="logoutButton">Logout</button>
@@ -12,6 +13,20 @@
         <input type="submit" value="Forums" class="dataButton" />
     </form>
     <button class="dataButton admin" id="usersButton">Users</button>
+    <button class="dataButton" id="changePasswordButton">Change Password</button>
+
+    <!-- Change password overlay -->
+    <div id="changePasswordOverlay" class="overlay">
+            <div id="changePasswordOverlayContent" class="overlayContent">
+                <span class="closeButton">&times;</span>
+                <center>
+                    <div style="margin: 20px;">
+                        <input type="password" placeholder="Enter New Password" name="psw" id="newPassword" required>
+                    </div>
+                </center>
+                <center><button class="submitButton">Change Password</button></center>
+            </div>
+        </div>
 
     <script src="home.js"></script>
 </body>
