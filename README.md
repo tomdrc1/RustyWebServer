@@ -4,7 +4,7 @@ This is a webserver that I've written from scratch in Rust. It handles HTTP pars
 
 The server will serve all of the files that you have inside of the `htmlFiles` directory, currently you can find there a template to a forum website I've written.
 
-Finally, the IP and port are hardcoded inside of the `main.rs` file. This is bad practice and I should take it out to a .env file, but the last time I touched this project was 6 years since I'm writing this README.
+Finally, the IP and port are hardcoded inside of the `main.rs` file. This is a bad practice and I should take it out to a .env file, but the last time I touched this project was 6 years ago at the time I'm writing this README.
 
 ## Build
 
